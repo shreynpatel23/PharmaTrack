@@ -26,11 +26,11 @@ const UserSchema = new Schema(
       type: Boolean,
       required: true,
     },
-    roleId: {
+    role: {
       type: Schema.Types.ObjectId,
       ref: "Role",
     },
-    storeId: {
+    store: {
       type: Schema.Types.ObjectId,
       ref: "Store",
     },

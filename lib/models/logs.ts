@@ -6,11 +6,11 @@ const LogSchema = new Schema(
       type: String,
       required: true,
     },
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    storeId: {
+    store: {
       type: Schema.Types.ObjectId,
       ref: "Store",
     },

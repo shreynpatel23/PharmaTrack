@@ -6,13 +6,16 @@ const StoreSchema = new Schema(
       type: String,
       required: true,
     },
+    netProfit: {
+      type: Number,
+    },
     location: {
       type: {
         addressLine1: String,
         addressLine2: String,
         postalCode: String,
         city: String,
-        provience: String,
+        province: String,
         country: String,
       },
       required: true,

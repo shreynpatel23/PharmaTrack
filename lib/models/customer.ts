@@ -18,7 +18,7 @@ const CustomerSchema = new Schema(
       type: String,
       required: true,
     },
-    storeId: {
+    store: {
       type: Schema.Types.ObjectId,
       ref: "Store",
     },
