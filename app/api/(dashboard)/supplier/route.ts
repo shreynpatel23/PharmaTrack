@@ -129,47 +129,53 @@ export const PUT = async (request: Request) => {
 };
 
 export const DELETE = async (request: Request) => {
-  // extract the fields from the request object
-  const { supplierId } = await request.json();
+  try {
+    // extract the fields from the request object
+    const { supplierId } = await request.json();
 
-  // establish the connection with database
-  await connect();
+    // establish the connection with database
+    await connect();
 
-  // check if the supplierId is valid
-  if (!supplierId || !Types.ObjectId.isValid(supplierId)) {
-    return new NextResponse(
-      JSON.stringify({ message: "Invalid or missing supplierId!" }),
-      { status: 400 }
-    );
-  }
-
-  // check if the supplier exists in the database
-  const supplier = await Supplier.findById(supplierId);
-  if (!supplier) {
-    return new NextResponse(
-      JSON.stringify({ message: "Supplier does not exist!" }),
-      { status: 400 }
-    );
-  }
-
-  const deleteSupplier = await Supplier.findByIdAndDelete({
-    _id: supplier._id,
-  });
-
-  // check if the process successed
-  if (!deleteSupplier) {
-    return new NextResponse(
-      JSON.stringify({ message: "Supplier not deleted!" }),
-      { status: 400 }
-    );
-  }
-
-  return new NextResponse(
-    JSON.stringify({
-      message: `Supplier, ${supplier.firstName} ${supplier.lastName} deleted successfully!`,
-    }),
-    {
-      status: 200,
+    // check if the supplierId is valid
+    if (!supplierId || !Types.ObjectId.isValid(supplierId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing supplierId!" }),
+        { status: 400 }
+      );
     }
-  );
+
+    // check if the supplier exists in the database
+    const supplier = await Supplier.findById(supplierId);
+    if (!supplier) {
+      return new NextResponse(
+        JSON.stringify({ message: "Supplier does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    const deleteSupplier = await Supplier.findByIdAndDelete({
+      _id: supplier._id,
+    });
+
+    // check if the process successed
+    if (!deleteSupplier) {
+      return new NextResponse(
+        JSON.stringify({ message: "Supplier not deleted!" }),
+        { status: 400 }
+      );
+    }
+
+    return new NextResponse(
+      JSON.stringify({
+        message: `Supplier, ${supplier.firstName} ${supplier.lastName} has been deleted successfully!`,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (err) {
+    return new NextResponse("Error in deleting supplier " + err, {
+      status: 500,
+    });
+  }
 };
