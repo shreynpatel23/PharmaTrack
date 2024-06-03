@@ -3,6 +3,7 @@ import connect from "@/lib/db";
 import Store from "@/lib/models/store";
 import { Types } from "mongoose";
 import User from "@/lib/models/user";
+import Product from "@/lib/models/product";
 
 export const GET = async () => {
   try {
@@ -183,6 +184,15 @@ export const DELETE = async (request: Request) => {
     if (!store) {
       return new NextResponse(
         JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    // get all users for this role
+    const users = await User.deleteMany({ store: store._id });
+    if (users.deletedCount <= 0) {
+      return new NextResponse(
+        JSON.stringify({ message: "Error in deleting users for a store!" }),
         { status: 400 }
       );
     }

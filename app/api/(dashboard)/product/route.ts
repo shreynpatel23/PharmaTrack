@@ -5,10 +5,31 @@ import { Types } from "mongoose";
 import Store from "@/lib/models/store";
 import Supplier from "@/lib/models/supplier";
 
-export const GET = async () => {
+export const GET = async (request: Request) => {
   try {
-    // establish a connection with database
+    // extract the store id from the search params
+    const { searchParams } = new URL(request.url);
+    const storeId = searchParams.get("storeId");
+
+    // check if the storeId exist and is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // establish the connection with database
     await connect();
+
+    // check if the store exists in the database
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
 
     // extract all the available products
     const products = await Product.find().populate({
@@ -106,12 +127,21 @@ export const PUT = async (request: Request) => {
       );
     }
 
+    // establish the connection with database
+    await connect();
+
+    // check if the store exists in the database
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
     // extract the fields from the request object
     const { productId, supplierId, productName, drugCode, strength, price } =
       await request.json();
-
-    // establish the connection with database
-    await connect();
 
     // check if the productId is valid
     if (!productId || !Types.ObjectId.isValid(productId)) {
@@ -121,7 +151,7 @@ export const PUT = async (request: Request) => {
       );
     }
 
-    // check if the supplier exists in the database
+    // check if the product exists in the database
     const product = await Product.findById(productId);
     if (!product) {
       return new NextResponse(
@@ -188,7 +218,7 @@ export const PUT = async (request: Request) => {
       }
     );
   } catch (err) {
-    return new NextResponse("Error in updating supplier " + err, {
+    return new NextResponse("Error in updating product " + err, {
       status: 500,
     });
   }
@@ -208,6 +238,18 @@ export const DELETE = async (request: Request) => {
       );
     }
 
+    // establish the connection with database
+    await connect();
+
+    // check if the store exists in the database
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
     // extract the fields from the request object
     const { productId } = await request.json();
 
@@ -219,10 +261,7 @@ export const DELETE = async (request: Request) => {
       );
     }
 
-    // establish the connection with database
-    await connect();
-
-    // check if the supplier exists in the database
+    // check if the product exists in the database
     const product = await Product.findById(productId);
     if (!product) {
       return new NextResponse(

@@ -62,11 +62,28 @@ export const POST = async (request: Request) => {
       storeId,
     } = await request.json();
 
+    // check if the storeId exist and is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // establish the database connection
+    await connect();
+
+    // check if the store exists
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
     // encrypt the password using bcrypt
     const hashedPassword = await bcrypt.hash(password, 12);
-
-    // establish the connection with database
-    await connect();
 
     // create the new user object
     const newUser = new User({
@@ -91,5 +108,183 @@ export const POST = async (request: Request) => {
     );
   } catch (err) {
     return new NextResponse("Error in creating users " + err, { status: 500 });
+  }
+};
+
+// update user api
+export const PUT = async (request: Request) => {
+  try {
+    // extract the fields from the request object
+    const {
+      userId,
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      status,
+      roleId,
+      storeId,
+    } = await request.json();
+
+    // check if the storeId exist and is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // establish the connection with database
+    await connect();
+
+    // check if the store exists
+    const store = Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the userId is valid
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing userId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return new NextResponse(
+        JSON.stringify({ message: "User does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the user belongs to this store or not
+    if (String(user.store) !== String(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "User does not belong to this store!" }),
+        { status: 400 }
+      );
+    }
+
+    // update the product
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        status,
+        roleId,
+      },
+      {
+        new: true,
+      }
+    );
+
+    // check if the process successed
+    if (!updatedUser) {
+      return new NextResponse(
+        JSON.stringify({ message: "User not updated!" }),
+        { status: 400 }
+      );
+    }
+
+    return new NextResponse(
+      JSON.stringify({
+        message: "User updated successfully!",
+        data: updatedUser,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (err) {
+    return new NextResponse("Error in updating user " + err, {
+      status: 500,
+    });
+  }
+};
+
+// delete user api
+export const DELETE = async (request: Request) => {
+  try {
+    // extract the fields from the request object
+    const { userId, storeId } = await request.json();
+
+    // check if the storeId exist and is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // establish the connection with database
+    await connect();
+
+    // check if the store exists
+    const store = Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the userId is valid
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing userId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the user exists in the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return new NextResponse(
+        JSON.stringify({ message: "User does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the user belongs to this store or not
+    if (String(user.store) !== String(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "User does not belong to this store!" }),
+        { status: 400 }
+      );
+    }
+
+    const deleteUser = await User.findByIdAndDelete({
+      _id: user._id,
+    });
+
+    // check if the process successed
+    if (!deleteUser) {
+      return new NextResponse(
+        JSON.stringify({ message: "User not deleted!" }),
+        { status: 400 }
+      );
+    }
+
+    return new NextResponse(
+      JSON.stringify({
+        message: `${user.firstName} ${user.lastName} has been deleted successfully!`,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (err) {
+    return new NextResponse("Error in deleting user " + err, {
+      status: 500,
+    });
   }
 };
