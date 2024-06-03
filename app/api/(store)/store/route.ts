@@ -98,3 +98,118 @@ export const POST = async (request: Request) => {
     return new NextResponse("Error in creating store " + err, { status: 500 });
   }
 };
+
+// update store api
+export const PUT = async (request: Request) => {
+  try {
+    // extract the fields from the request object
+    const { storeId, name, location } = await request.json();
+
+    // establish the connection with database
+    await connect();
+
+    // check if the productId is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the store exists in the database
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    // update the store
+    const updatedStore = await Store.findOneAndUpdate(
+      { _id: store._id },
+      {
+        name,
+        location,
+      },
+      {
+        new: true,
+      }
+    );
+
+    // check if the process successed
+    if (!updatedStore) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store not updated!" }),
+        { status: 400 }
+      );
+    }
+
+    return new NextResponse(
+      JSON.stringify({
+        message: "Store updated successfully!",
+        data: updatedStore,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (err) {
+    return new NextResponse("Error in updating store " + err, {
+      status: 500,
+    });
+  }
+};
+
+// delete store api
+export const DELETE = async (request: Request) => {
+  try {
+    // extract the fields from the request object
+    const { storeId } = await request.json();
+
+    // establish the connection with database
+    await connect();
+
+    // check if the storeId is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the store exists in the database
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
+    const deleteStore = await Store.findByIdAndDelete({
+      _id: store._id,
+    });
+
+    // check if the process successed
+    if (!deleteStore) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store not deleted!" }),
+        { status: 400 }
+      );
+    }
+
+    return new NextResponse(
+      JSON.stringify({
+        message: `Store, ${store.name} has been deleted successfully!`,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (err) {
+    return new NextResponse("Error in deleting store " + err, {
+      status: 500,
+    });
+  }
+};
