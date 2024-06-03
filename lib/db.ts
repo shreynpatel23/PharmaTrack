@@ -15,7 +15,7 @@ const connect = async () => {
   }
 
   try {
-    mongoose.connect(DB_URL!, {
+    await mongoose.connect(DB_URL!, {
       dbName: "pharmatrack",
       bufferCommands: false,
     });
