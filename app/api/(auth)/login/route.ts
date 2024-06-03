@@ -41,6 +41,6 @@ export const POST = async (request: Request) => {
       }
     );
   } catch (err) {
-    return new NextResponse("Error in login" + err, { status: 500 });
+    return new NextResponse("Error in login " + err, { status: 500 });
   }
 };

@@ -18,7 +18,7 @@ export const GET = async () => {
       { status: 200 }
     );
   } catch (err) {
-    return new NextResponse("Error in fetching all stores" + err, {
+    return new NextResponse("Error in fetching all stores " + err, {
       status: 500,
     });
   }
@@ -95,6 +95,6 @@ export const POST = async (request: Request) => {
       }
     );
   } catch (err) {
-    return new NextResponse("Error in creating store" + err, { status: 500 });
+    return new NextResponse("Error in creating store " + err, { status: 500 });
   }
 };

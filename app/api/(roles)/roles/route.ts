@@ -16,7 +16,7 @@ export const GET = async () => {
       { status: 200 }
     );
   } catch (err) {
-    return new NextResponse("Error in fetching roles" + err, { status: 500 });
+    return new NextResponse("Error in fetching roles " + err, { status: 500 });
   }
 };
 
@@ -41,6 +41,6 @@ export const POST = async (request: Request) => {
       }
     );
   } catch (err) {
-    return new NextResponse("Error in creating role" + err, { status: 500 });
+    return new NextResponse("Error in creating role " + err, { status: 500 });
   }
 };

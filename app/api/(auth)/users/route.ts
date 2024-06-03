@@ -44,7 +44,7 @@ export const GET = async (request: Request) => {
       { status: 200 }
     );
   } catch (err) {
-    return new NextResponse("Error in fetching users" + err, { status: 500 });
+    return new NextResponse("Error in fetching users " + err, { status: 500 });
   }
 };
 
@@ -90,6 +90,6 @@ export const POST = async (request: Request) => {
       }
     );
   } catch (err) {
-    return new NextResponse("Error in creating users" + err, { status: 500 });
+    return new NextResponse("Error in creating users " + err, { status: 500 });
   }
 };
