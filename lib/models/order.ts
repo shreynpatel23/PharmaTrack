@@ -17,7 +17,16 @@ const OrderSchema = new Schema(
     },
     status: {
       type: String,
+      enum: ["COMPLETED", "PENDING", "SOLD"],
       required: true,
+    },
+    supplier: {
+      type: Schema.Types.ObjectId,
+      ref: "Supplier",
+    },
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: "Customer",
     },
     createdBy: {
       type: Schema.Types.ObjectId,

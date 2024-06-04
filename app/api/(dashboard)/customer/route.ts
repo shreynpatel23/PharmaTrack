@@ -32,7 +32,9 @@ export const GET = async (request: Request) => {
     }
 
     // extract all the available customer
-    const customers = await Customer.find();
+    const customers = await Customer.find({
+      store: new Types.ObjectId(storeId),
+    }).populate({ path: "store", select: ["_id", "name"] });
 
     // send them to the frontend
     return new NextResponse(

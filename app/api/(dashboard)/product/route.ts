@@ -35,10 +35,14 @@ export const GET = async (request: Request) => {
     await Supplier.find({});
 
     // extract all the available products
-    const products = await Product.find().populate({
-      path: "supplier",
-      select: ["_id", "firstName", "lastName", "location"],
-    });
+    const products = await Product.find({
+      store: new Types.ObjectId(storeId),
+    })
+      .populate({ path: "store", select: ["_id", "name"] })
+      .populate({
+        path: "supplier",
+        select: ["_id", "firstName", "lastName", "location"],
+      });
 
     // send them to the frontend
     return new NextResponse(
