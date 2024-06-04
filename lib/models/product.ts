@@ -1,4 +1,3 @@
-import { timeStamp } from "console";
 import { Schema, model, models } from "mongoose";
 
 const ProductSchema = new Schema(
@@ -40,5 +39,4 @@ const ProductSchema = new Schema(
 );
 
 const Product = models.Product || model("Product", ProductSchema);
-
 export default Product;

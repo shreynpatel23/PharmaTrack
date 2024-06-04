@@ -27,5 +27,4 @@ const StoreSchema = new Schema(
 );
 
 const Store = models.Store || model("Store", StoreSchema);
-
 export default Store;

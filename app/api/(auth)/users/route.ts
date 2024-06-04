@@ -4,6 +4,7 @@ import connect from "@/lib/db";
 import User from "@/lib/models/user";
 import { Types } from "mongoose";
 import Store from "@/lib/models/store";
+import Role from "@/lib/models/role";
 
 // get all users for a store id
 export const GET = async (request: Request) => {
@@ -31,6 +32,9 @@ export const GET = async (request: Request) => {
         { status: 400 }
       );
     }
+
+    // get all the roles as well to avoid the MissingSchemaError
+    await Role.find({});
 
     // fetch all the users where storeId is equal to params store id
     const users = await User.find({

@@ -21,5 +21,4 @@ const LogSchema = new Schema(
 );
 
 const Log = models.Log || model("Log", LogSchema);
-
 export default Log;

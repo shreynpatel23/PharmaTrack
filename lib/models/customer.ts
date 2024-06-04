@@ -29,5 +29,4 @@ const CustomerSchema = new Schema(
 );
 
 const Customer = models.Customer || model("Customer", CustomerSchema);
-
 export default Customer;

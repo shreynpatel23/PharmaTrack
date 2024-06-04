@@ -31,6 +31,9 @@ export const GET = async (request: Request) => {
       );
     }
 
+    // load the supplier model to avoid the MissingSchema error
+    await Supplier.find({});
+
     // extract all the available products
     const products = await Product.find().populate({
       path: "supplier",

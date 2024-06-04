@@ -36,5 +36,4 @@ const SupplierSchema = new Schema(
 );
 
 const Supplier = models.Supplier || model("Supplier", SupplierSchema);
-
 export default Supplier;
