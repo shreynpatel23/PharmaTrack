@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import connect from "@/lib/db";
-import Product from "@/lib/models/product";
-import { Types } from "mongoose";
+import Customer from "@/lib/models/customer";
 import Store from "@/lib/models/store";
-import Supplier from "@/lib/models/supplier";
+import { Types } from "mongoose";
 
+// get all customers api routes
 export const GET = async (request: Request) => {
   try {
     // extract the store id from the search params
@@ -19,7 +19,7 @@ export const GET = async (request: Request) => {
       );
     }
 
-    // establish the connection with database
+    // establish a connection with database
     await connect();
 
     // check if the store exists in the database
@@ -31,34 +31,29 @@ export const GET = async (request: Request) => {
       );
     }
 
-    // load the supplier model to avoid the MissingSchema error
-    await Supplier.find({});
-
-    // extract all the available products
-    const products = await Product.find().populate({
-      path: "supplier",
-      select: ["_id", "firstName", "lastName", "location"],
-    });
+    // extract all the available customer
+    const customers = await Customer.find();
 
     // send them to the frontend
     return new NextResponse(
       JSON.stringify({
-        message: "Products fetched successfully!",
-        data: products,
+        message: "Customers fetched successfully!",
+        data: customers,
       }),
       { status: 200 }
     );
   } catch (err) {
-    return new NextResponse("Error in fetching products " + err, {
+    return new NextResponse("Error in fetching customer " + err, {
       status: 500,
     });
   }
 };
 
+// create a customer api routes
 export const POST = async (request: Request) => {
   try {
     // extract the values frem the request object
-    const { productName, drugCode, strength, price, supplierId, storeId } =
+    const { firstName, lastName, email, phoneNumber, storeId } =
       await request.json();
 
     // check if the storeId exist and is valid
@@ -81,54 +76,54 @@ export const POST = async (request: Request) => {
       );
     }
 
-    // create the new product object
-    const newProduct = new Product({
-      productName,
-      drugCode,
-      strength,
-      price,
-      quantity: 0,
-      supplier: new Types.ObjectId(supplierId),
+    // create the new customer object
+    const newCustomer = new Customer({
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
       store: new Types.ObjectId(storeId),
     });
 
     // save the info in the dabatabse
-    await newProduct.save();
+    await newCustomer.save();
 
     // send the confirmation to frontend
     return new NextResponse(
       JSON.stringify({
-        message: "Product created successfully!",
-        data: newProduct,
+        message: "Customer created successfully!",
+        data: newCustomer,
       }),
       {
         status: 201,
       }
     );
   } catch (err) {
-    return new NextResponse("Error in creating product " + err, {
+    return new NextResponse("Error in creating customer " + err, {
       status: 500,
     });
   }
 };
 
+// update customer api
 export const PUT = async (request: Request) => {
   try {
-    // extract the fields from the request object
-    const {
-      productId,
-      supplierId,
-      productName,
-      drugCode,
-      strength,
-      price,
-      storeId,
-    } = await request.json();
+    // extract the values frem the request object
+    const { firstName, lastName, email, phoneNumber, storeId, customerId } =
+      await request.json();
 
     // check if the storeId exist and is valid
     if (!storeId || !Types.ObjectId.isValid(storeId)) {
       return new NextResponse(
         JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the customerId exisit and is valid
+    if (!customerId || !Types.ObjectId.isValid(customerId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing customerId!" }),
         { status: 400 }
       );
     }
@@ -145,57 +140,31 @@ export const PUT = async (request: Request) => {
       );
     }
 
-    // check if the productId is valid
-    if (!productId || !Types.ObjectId.isValid(productId)) {
+    // check if the customer exists in the database
+    const customer = await Customer.findById(customerId);
+    if (!customer) {
       return new NextResponse(
-        JSON.stringify({ message: "Invalid or missing productId!" }),
+        JSON.stringify({ message: "Customer does not exist!" }),
         { status: 400 }
       );
     }
 
-    // check if the product exists in the database
-    const product = await Product.findById(productId);
-    if (!product) {
+    // check if the customer belongs to this store or not
+    if (String(customer.store) !== String(storeId)) {
       return new NextResponse(
-        JSON.stringify({ message: "Product does not exist!" }),
+        JSON.stringify({ message: "Customer does not belong to this store!" }),
         { status: 400 }
       );
     }
 
-    // check if the supplierId is valid
-    if (!supplierId || !Types.ObjectId.isValid(supplierId)) {
-      return new NextResponse(
-        JSON.stringify({ message: "Invalid or missing supplierId!" }),
-        { status: 400 }
-      );
-    }
-
-    // check if the supplier exists in the database
-    const supplier = await Supplier.findById(supplierId);
-    if (!supplier) {
-      return new NextResponse(
-        JSON.stringify({ message: "Supplier does not exist!" }),
-        { status: 400 }
-      );
-    }
-
-    // check if the product belongs to this store or not
-    if (String(product.store) !== String(storeId)) {
-      return new NextResponse(
-        JSON.stringify({ message: "Product does not belong to this store!" }),
-        { status: 400 }
-      );
-    }
-
-    // update the product
-    const updatedProduct = await Product.findOneAndUpdate(
-      { _id: product._id },
+    // update the customer
+    const updateCustomer = await Customer.findOneAndUpdate(
+      { _id: customer._id },
       {
-        productName,
-        drugCode,
-        strength,
-        price,
-        supplier: new Types.ObjectId(supplierId),
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
       },
       {
         new: true,
@@ -203,38 +172,48 @@ export const PUT = async (request: Request) => {
     );
 
     // check if the process successed
-    if (!updatedProduct) {
+    if (!updateCustomer) {
       return new NextResponse(
-        JSON.stringify({ message: "Product not updated!" }),
+        JSON.stringify({ message: "Customer not updated!" }),
         { status: 400 }
       );
     }
 
     return new NextResponse(
       JSON.stringify({
-        message: "Product updated successfully!",
-        data: updatedProduct,
+        message: "Customer updated successfully!",
+        data: updateCustomer,
       }),
       {
         status: 200,
       }
     );
   } catch (err) {
-    return new NextResponse("Error in updating product " + err, {
+    return new NextResponse("Error in creating customer " + err, {
       status: 500,
     });
   }
 };
 
+// delete customer api
 export const DELETE = async (request: Request) => {
   try {
-    // extract the fields from the request object
-    const { productId, storeId } = await request.json();
+    // extract the values frem the request object
+    const { firstName, lastName, email, phoneNumber, storeId, customerId } =
+      await request.json();
 
     // check if the storeId exist and is valid
     if (!storeId || !Types.ObjectId.isValid(storeId)) {
       return new NextResponse(
         JSON.stringify({ message: "Invalid or missing storeId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the customerId exisit and is valid
+    if (!customerId || !Types.ObjectId.isValid(customerId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing customerId!" }),
         { status: 400 }
       );
     }
@@ -251,53 +230,45 @@ export const DELETE = async (request: Request) => {
       );
     }
 
-    // check if the productId is valid
-    if (!productId || !Types.ObjectId.isValid(productId)) {
+    // check if the customer exists in the database
+    const customer = await Customer.findById(customerId);
+    if (!customer) {
       return new NextResponse(
-        JSON.stringify({ message: "Invalid or missing productId!" }),
+        JSON.stringify({ message: "Customer does not exist!" }),
         { status: 400 }
       );
     }
 
-    // check if the product exists in the database
-    const product = await Product.findById(productId);
-    if (!product) {
+    // check if the customer belongs to this store or not
+    if (String(customer.store) !== String(storeId)) {
       return new NextResponse(
-        JSON.stringify({ message: "Product does not exist!" }),
+        JSON.stringify({ message: "Customer does not belong to this store!" }),
         { status: 400 }
       );
     }
 
-    // check if the product belongs to this store or not
-    if (String(product.store) !== String(storeId)) {
-      return new NextResponse(
-        JSON.stringify({ message: "Product does not belong to this store!" }),
-        { status: 400 }
-      );
-    }
-
-    const deleteProduct = await Product.findByIdAndDelete({
-      _id: product._id,
+    const deleteCustomer = await Customer.findByIdAndDelete({
+      _id: customer._id,
     });
 
     // check if the process successed
-    if (!deleteProduct) {
+    if (!deleteCustomer) {
       return new NextResponse(
-        JSON.stringify({ message: "Product not deleted!" }),
+        JSON.stringify({ message: "Customer not deleted!" }),
         { status: 400 }
       );
     }
 
     return new NextResponse(
       JSON.stringify({
-        message: `${product.productName} has been deleted successfully!`,
+        message: `${customer.firstName} ${customer.lastName} has been deleted successfully!`,
       }),
       {
         status: 200,
       }
     );
   } catch (err) {
-    return new NextResponse("Error in deleting product " + err, {
+    return new NextResponse("Error in deleting customer " + err, {
       status: 500,
     });
   }
