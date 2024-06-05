@@ -3,6 +3,7 @@ import connect from "@/lib/db";
 import jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
 import User from "@/lib/models/user";
+import Role from "@/lib/models/role";
 
 export const POST = async (request: Request) => {
   try {
@@ -12,8 +13,14 @@ export const POST = async (request: Request) => {
     // establish the connection with database
     await connect();
 
+    // get all the roles as well to avoid the MissingSchemaError
+    await Role.find({});
+
     // check if the user exists in the database
-    const selectedUser = await User.findOne({ email });
+    const selectedUser = await User.findOne({ email }).populate({
+      path: "role",
+      select: ["_id", "name"],
+    });
 
     if (!selectedUser) {
       return new NextResponse(
@@ -29,7 +36,10 @@ export const POST = async (request: Request) => {
       );
 
     // create a jwt token and send it as a resppnse
-    const token = jwt.sign({ email }, process.env.TOKEN_SECRET || "");
+    const token = jwt.sign(
+      { selectedUser },
+      process.env.TOKEN_SECRET || "sign"
+    );
 
     return new NextResponse(
       JSON.stringify({
