@@ -122,10 +122,24 @@ export const POST = async (request: Request) => {
       );
     }
 
+    // get the total order total here
+    const totalOrderAmount = quantity * product.price;
+
+    // check if the total order amount is less than the available balance
+    if (totalOrderAmount > store.netProfit) {
+      return new NextResponse(
+        JSON.stringify({
+          message:
+            "You do not have enough balance to make this order. Please update your amount and then try creating this order!",
+        }),
+        { status: 400 }
+      );
+    }
+
     // create the new order object
     const newOrder = new Order({
       quantity,
-      amount: quantity * product.price,
+      amount: totalOrderAmount,
       type: TYPE.PURCHASE,
       status: STATUS.PENDING,
       product: new Types.ObjectId(productId),
@@ -158,12 +172,20 @@ export const POST = async (request: Request) => {
 export const PUT = async (request: Request) => {
   try {
     // extract the values frem the request object
-    const { orderId, productId, quantity } = await request.json();
+    const { orderId, productId, quantity, storeId } = await request.json();
 
     // check if the orderId exist and is valid
     if (!orderId || !Types.ObjectId.isValid(orderId)) {
       return new NextResponse(
         JSON.stringify({ message: "Invalid or missing orderId!" }),
+        { status: 400 }
+      );
+    }
+
+    // check if the storeId exist and is valid
+    if (!storeId || !Types.ObjectId.isValid(storeId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid or missing storeId!" }),
         { status: 400 }
       );
     }
@@ -188,6 +210,15 @@ export const PUT = async (request: Request) => {
       );
     }
 
+    // check if the store exists in the database
+    const store = await Store.findById(storeId);
+    if (!store) {
+      return new NextResponse(
+        JSON.stringify({ message: "Store does not exist!" }),
+        { status: 400 }
+      );
+    }
+
     // check if the product exists in the database
     const product = await Product.findById(productId);
     if (!product) {
@@ -205,12 +236,26 @@ export const PUT = async (request: Request) => {
       );
     }
 
+    // get the total order total here
+    const totalOrderAmount = quantity * product.price;
+
+    // check if the total order amount is less than the available balance
+    if (totalOrderAmount > store.netProfit) {
+      return new NextResponse(
+        JSON.stringify({
+          message:
+            "You do not have enough balance to make this order. Please update your amount and then try creating this order!",
+        }),
+        { status: 400 }
+      );
+    }
+
     // update the order
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: order._id },
       {
         quantity,
-        amount: quantity * product.price,
+        amount: totalOrderAmount,
       },
       {
         new: true,
