@@ -13,6 +13,22 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        background: "#FAFAFA",
+        accent: "#E09958",
+        accentHover: "#946841",
+        heading: "#4F5258",
+        black: "#2D2D2D",
+        grey: "#AFB0B2",
+        error: "#EA1A1A",
+      },
+      fontFamily: {
+        workSans: ['"Work Sans", sans-serif;'],
+      },
+      boxShadow: {
+        button: "0 5px 10px 0 rgba(0, 0, 0, 0.15)",
+        buttonHover: "0 3px 6px 0 rgba(0, 0, 0, 0.15)",
+      },
     },
   },
   plugins: [],
