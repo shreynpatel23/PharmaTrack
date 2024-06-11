@@ -24,7 +24,7 @@ export default function Input(props: IInputProps) {
       )}
       <input
         id={label}
-        className={`px-4 py-2 mb-2 outline-none bg-white border placeholder:text-sm placeholder:text-grey ${
+        className={`w-full px-4 py-2 mb-2 outline-none bg-white border placeholder:text-sm placeholder:text-grey ${
           hasError ? "border-error" : "border-grey"
         } rounded-md ${className} ${
           disabled ? "cursor-not-allowed bg-[rgba(175,176,178,0.2)]" : null

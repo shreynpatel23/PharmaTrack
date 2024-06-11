@@ -15,12 +15,15 @@ const config: Config = {
       },
       colors: {
         background: "#FAFAFA",
+        accentBlue: "#4C75E0",
         accent: "#E09958",
         accentHover: "#946841",
         heading: "#4F5258",
         black: "#2D2D2D",
         grey: "#AFB0B2",
         error: "#EA1A1A",
+        orange: "#FFF0E2",
+        blue: "#E4EAFB",
       },
       fontFamily: {
         workSans: ['"Work Sans", sans-serif;'],
@@ -28,6 +31,7 @@ const config: Config = {
       boxShadow: {
         button: "0 5px 10px 0 rgba(0, 0, 0, 0.15)",
         buttonHover: "0 3px 6px 0 rgba(0, 0, 0, 0.15)",
+        card: "0 10px 20px 0 rgba(0, 0, 0, 0.06)",
       },
     },
   },

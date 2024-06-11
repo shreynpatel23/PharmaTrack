@@ -1,8 +1,8 @@
 export interface IButtonProps {
   buttonText: string;
   buttonClassName: string;
-  hasIcon: boolean;
   onClick: () => void;
+  hasIcon?: boolean;
   icon?: React.ReactNode;
   isDisabled?: boolean;
   isLoading?: boolean;

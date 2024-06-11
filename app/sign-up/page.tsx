@@ -7,7 +7,7 @@ export default function Signup() {
     <div>
       <h1>Hello from Sign up</h1>
       <button
-        className="py-4 px-8 rounded-sm bg-orange-500 text-white"
+        className="py-4 px-8 rounded-sm bg-accent text-white"
         onClick={() => router.push("/login")}
       >
         Login
