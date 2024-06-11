@@ -319,7 +319,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="w-[50%] px-8 pt-8">
+            <div className="w-[50%] px-8 pt-4">
               <div className="my-8 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-orange flex items-center justify-center">
                   <img

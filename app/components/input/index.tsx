@@ -13,7 +13,7 @@ export default function Input(props: IInputProps) {
     disabled,
   } = props;
   return (
-    <div className="py-4">
+    <div className="py-2">
       {hasLabel && (
         <label
           htmlFor={label}
