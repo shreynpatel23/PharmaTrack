@@ -32,6 +32,7 @@ const config: Config = {
         button: "0 5px 10px 0 rgba(0, 0, 0, 0.15)",
         buttonHover: "0 3px 6px 0 rgba(0, 0, 0, 0.15)",
         card: "0 10px 20px 0 rgba(0, 0, 0, 0.06)",
+        table: "0 4px 10px 0 rgba(0, 0, 0, 0.03)",
       },
     },
   },

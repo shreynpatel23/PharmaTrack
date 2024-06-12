@@ -35,7 +35,7 @@ export default function TopBar() {
   }
 
   return (
-    <div className="py-4 px-8 flex items-center">
+    <div className="py-6 px-8 flex items-center">
       <h2 className="text-xl leading-xl text-black font-medium">
         👋🏻 {user.firstName} {user.lastName}
       </h2>
@@ -47,7 +47,9 @@ export default function TopBar() {
             </p>
           )}
           {isLoading ? (
-            <Loading />
+            <div className="py-2">
+              <Loading />
+            </div>
           ) : (
             <button
               className="px-4 py-2 bg-transparent border-0 rounded-[8px] transition-all hover:bg-error hover:text-white font-medium text-sm text-grey"
