@@ -1,7 +1,7 @@
 .loader {
-    height: 27px;
+    height: 1em;
     aspect-ratio: 5;
-    --c: #2d2d2d 90deg, #0000 0;
+    --c: #444444 90deg, #0000 0;
     background:
         conic-gradient(from 135deg at top, var(--c)),
         conic-gradient(from -45deg at bottom, var(--c)) 12.5% 100%;

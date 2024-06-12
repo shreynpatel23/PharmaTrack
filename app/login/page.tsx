@@ -5,9 +5,81 @@ import { useRouter } from "next/navigation";
 import Input from "../components/input";
 import Button from "../components/button";
 import ArrowRight from "../components/icons/ArrowRight";
+import { useState } from "react";
+import { postData } from "@/utils/fetch";
 
 export default function Login() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState({
+    emailError: "",
+    passwordError: "",
+    apiError: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  function checkEmail() {
+    if (!email) {
+      setError((error) => ({
+        ...error,
+        emailError: "Email is required",
+      }));
+      return false;
+    }
+    if (!email.includes("@")) {
+      setError((error) => ({
+        ...error,
+        emailError: "Please enter a valid email",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      emailError: "",
+    }));
+    return true;
+  }
+
+  function checkPassword() {
+    if (!password) {
+      setError((error) => ({
+        ...error,
+        passwordError: "Password is required",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      passwordError: "",
+    }));
+    return true;
+  }
+
+  async function handleLogin() {
+    const ALL_CHECKS_PASS = [checkPassword(), checkEmail()].every(Boolean);
+
+    if (!ALL_CHECKS_PASS) return;
+
+    setIsLoading(true);
+    try {
+      const response = await postData("/api/login", {
+        email,
+        password,
+      });
+      const { data } = response;
+      if (data) {
+        return router.push(`/store/${response?.data?.store}`);
+      }
+    } catch (err: any) {
+      setError((error) => ({
+        ...error,
+        apiError: err.message,
+      }));
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
     <div className="h-[100vh] flex items-center">
       <div className="w-[50%] flex flex-col items-center">
@@ -44,20 +116,31 @@ export default function Login() {
               hasLabel
               label="Email"
               placeholder="Enter your email address"
+              onChange={(event) => setEmail(event.target.value)}
+              hasError={error.emailError !== ""}
+              error={error.emailError}
             />
             <Input
               type="password"
               hasLabel
               label="Password"
               placeholder="Enter your password"
+              onChange={(event) => setPassword(event.target.value)}
+              hasError={error.passwordError !== ""}
+              error={error.passwordError}
             />
+            {error.apiError && (
+              <p className="text-sm text-error py-2">{error.apiError}</p>
+            )}
             <div className="flex items-center gap-6 my-6">
               <Button
+                isDisabled={isLoading}
+                isLoading={isLoading}
                 buttonClassName="rounded-md shadow-button hover:shadow-buttonHover bg-accent hover:bg-accentHover text-white"
                 buttonText="Log In"
                 hasIcon
                 icon={<ArrowRight width="24" height="24" fill="white" />}
-                onClick={() => console.log("login")}
+                onClick={() => handleLogin()}
               />
             </div>
           </form>

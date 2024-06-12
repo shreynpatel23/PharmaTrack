@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
 import User from "@/lib/models/user";
 import Role from "@/lib/models/role";
+import { cookies } from "next/headers";
 
 export const POST = async (request: Request) => {
   try {
@@ -25,14 +26,15 @@ export const POST = async (request: Request) => {
     if (!selectedUser) {
       return new NextResponse(
         JSON.stringify({ message: "User does not exist!" }),
-        { status: 404 }
+        { status: 400 }
       );
     }
 
     // check if the password hash matches or not
     if (!bcrypt.compareSync(password, selectedUser.password))
       return new NextResponse(
-        JSON.stringify({ message: "Email or password is incorrect" })
+        JSON.stringify({ message: "Email or password is incorrect" }),
+        { status: 400 }
       );
 
     // create a jwt token and send it as a resppnse
@@ -41,10 +43,19 @@ export const POST = async (request: Request) => {
       process.env.TOKEN_SECRET || "sign"
     );
 
+    const response = { ...selectedUser?._doc, token };
+
+    cookies().set({
+      name: "userData",
+      value: JSON.stringify(response),
+      httpOnly: true,
+      path: "/",
+    });
+
     return new NextResponse(
       JSON.stringify({
         message: "User fetched successfully!",
-        data: { ...selectedUser?._doc, token },
+        data: response,
       }),
       {
         status: 200,
