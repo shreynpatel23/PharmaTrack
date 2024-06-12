@@ -76,7 +76,13 @@ export default function Login() {
         return router.push("/onboarding");
       }
       setStoreId(data?.store);
-      localStorage.setItem("storeId", data?.store);
+      try {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("storeId", data?.store);
+        }
+      } catch (error) {
+        console.error("Error while setting token in localStorage:", error);
+      }
       return router.push(`/store/${data?.store}/dashboard`);
     } catch (err: any) {
       setError((error) => ({

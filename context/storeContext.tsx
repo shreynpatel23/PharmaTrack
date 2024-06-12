@@ -10,7 +10,8 @@ const Context = createContext<{
 });
 
 export function StoreContext({ children }: { children: React.ReactNode }) {
-  const id = localStorage.getItem("storeId");
+  const id =
+    typeof window !== "undefined" ? localStorage.getItem("storeId") : "";
   const [storeId, setStoreId] = useState(id ?? "");
 
   return (
