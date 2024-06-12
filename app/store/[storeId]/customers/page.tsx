@@ -121,13 +121,15 @@ export default function Customers() {
             <h3 className="text-xl leading-xl text-black font-workSans">
               Customers
             </h3>
-            <Button
-              buttonText="Add Customer"
-              buttonClassName="rounded-md shadow-button hover:shadow-buttonHover bg-accent hover:bg-accentHover text-white text-md leading-md"
-              onClick={() =>
-                router.push(`/store/${user.store}/customers/add-customer`)
-              }
-            />
+            {user.role.name.toLowerCase() !== "Employee".toLowerCase() && (
+              <Button
+                buttonText="Add Customer"
+                buttonClassName="rounded-md shadow-button hover:shadow-buttonHover bg-accent hover:bg-accentHover text-white text-md leading-md"
+                onClick={() =>
+                  router.push(`/store/${user.store}/customers/add-customer`)
+                }
+              />
+            )}
             <div className="ml-auto w-[350px]">
               <SearchInput
                 type="text"

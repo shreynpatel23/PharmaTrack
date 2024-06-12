@@ -80,6 +80,7 @@ export default function Login() {
       try {
         if (typeof window !== "undefined") {
           localStorage.setItem("userId", data._id);
+          localStorage.setItem("token", data.token);
         }
       } catch (error) {
         console.error("Error while setting token in localStorage:", error);

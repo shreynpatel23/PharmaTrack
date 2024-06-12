@@ -16,10 +16,13 @@ export async function fetchData(url: string) {
   }
 }
 export async function postData(url: string, body: any) {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : "";
   try {
     const response = await axios.post(url, body, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
 

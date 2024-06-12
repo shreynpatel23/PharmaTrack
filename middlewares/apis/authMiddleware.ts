@@ -31,7 +31,7 @@ async function validateToken(token: string | undefined) {
 }
 
 export const authMiddleware = async (request: Request) => {
-  const token = request.headers.get("authorization")?.split(" ")[2];
+  const token = request.headers.get("authorization")?.split(" ")[1];
   let response;
   await validateToken(token)
     .then((res) => {
