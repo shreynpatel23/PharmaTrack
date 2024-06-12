@@ -13,3 +13,11 @@ body {
   line-height: 1.5;
   color: #2d2d2d;
 }
+
+button:disabled {
+  opacity: 0.6;
+}
+
+input:disabled {
+  opacity: 0.6;
+}

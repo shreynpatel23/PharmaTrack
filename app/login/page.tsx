@@ -68,9 +68,10 @@ export default function Login() {
         password,
       });
       const { data } = response;
-      if (data) {
-        return router.push(`/store/${response?.data?.store}`);
+      if (!data.store) {
+        return router.push("/onboarding");
       }
+      return router.push(`/store/${data?.store}`);
     } catch (err: any) {
       setError((error) => ({
         ...error,
@@ -119,6 +120,7 @@ export default function Login() {
               onChange={(event) => setEmail(event.target.value)}
               hasError={error.emailError !== ""}
               error={error.emailError}
+              disabled={isLoading}
             />
             <Input
               type="password"
@@ -128,9 +130,12 @@ export default function Login() {
               onChange={(event) => setPassword(event.target.value)}
               hasError={error.passwordError !== ""}
               error={error.passwordError}
+              disabled={isLoading}
             />
             {error.apiError && (
-              <p className="text-sm text-error py-2">{error.apiError}</p>
+              <p className="text-error text-sm font-medium py-2">
+                {error.apiError}
+              </p>
             )}
             <div className="flex items-center gap-6 my-6">
               <Button

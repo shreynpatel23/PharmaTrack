@@ -31,11 +31,23 @@ export const POST = async (request: Request) => {
     }
 
     // check if the password hash matches or not
-    if (!bcrypt.compareSync(password, selectedUser.password))
+    if (!bcrypt.compareSync(password, selectedUser.password)) {
       return new NextResponse(
         JSON.stringify({ message: "Email or password is incorrect" }),
         { status: 400 }
       );
+    }
+
+    // check if the status of the user is true or false
+    if (!selectedUser.status) {
+      return new NextResponse(
+        JSON.stringify({
+          message:
+            "Your Account has been de-activated by the admin team. Please get in touch with them to access your information!",
+        }),
+        { status: 400 }
+      );
+    }
 
     // create a jwt token and send it as a resppnse
     const token = jwt.sign(
