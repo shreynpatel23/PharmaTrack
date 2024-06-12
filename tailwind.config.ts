@@ -22,6 +22,7 @@ const config: Config = {
         black: "#2D2D2D",
         grey: "#AFB0B2",
         error: "#EA1A1A",
+        success: "#10BC17",
         orange: "#FFF0E2",
         blue: "#E4EAFB",
       },

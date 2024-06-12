@@ -1,3 +1,5 @@
+import { IUser } from "@/context/userContext";
+
 export function isRouteProtected(url: string) {
   if (url.includes("/api/users")) {
     return true;
@@ -18,4 +20,8 @@ export function isRouteProtected(url: string) {
     return true;
   }
   return false;
+}
+
+export function isUserAdmin(user: IUser) {
+  return user.role.name.toLowerCase() !== "Employee".toLowerCase();
 }

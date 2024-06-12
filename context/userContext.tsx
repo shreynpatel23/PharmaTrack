@@ -4,7 +4,7 @@ import { fetchData } from "@/utils/fetch";
 import { redirect } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
-interface IUser {
+export interface IUser {
   firstName: string;
   lastName: string;
   phoneNumber: string;
