@@ -13,6 +13,7 @@ export default function EmptyState({
           <img
             src="/Empty-state.svg"
             alt="Empty State Illustration for empty results"
+            className="w-[250px]"
           />
         </div>
         <p className="text-lg leading-6 font-medium text-black text-center font-workSans">

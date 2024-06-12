@@ -11,6 +11,7 @@ import { fetchData } from "@/utils/fetch";
 import FullPageLoading from "@/app/components/full-page-loading";
 import moment from "moment";
 import EmptyState from "@/app/components/empty-state";
+import ApiError from "@/app/components/api-error";
 
 export default function Customers() {
   const router = useRouter();
@@ -61,7 +62,7 @@ export default function Customers() {
 
     if (customers?.length <= 0) {
       return (
-        <EmptyState wrapperClassName="h-[80vh] flex items-center justify-center" />
+        <EmptyState wrapperClassName="h-[60vh] flex items-center justify-center" />
       );
     }
 
@@ -86,7 +87,10 @@ export default function Customers() {
           </thead>
           <tbody>
             {customers?.map((customer) => (
-              <tr className="bg-white border-t border-neutral-200">
+              <tr
+                className="bg-white border-t border-neutral-200"
+                key={customer._id}
+              >
                 <td className="w-[25%] pl-6 py-4 text-black font-regular text-[14px] leading-md">
                   {customer.firstName} {customer.lastName}
                 </td>
@@ -135,6 +139,7 @@ export default function Customers() {
               />
             </div>
           </div>
+          {error.apiError && <ApiError errorMessage={error.apiError} />}
           {renderLoadingOrTable()}
         </div>
       </div>

@@ -8,6 +8,7 @@ import ArrowRight from "../components/icons/ArrowRight";
 import { useState } from "react";
 import { postData } from "@/utils/fetch";
 import { useUserContext } from "@/context/userContext";
+import ApiError from "../components/api-error";
 
 export default function Login() {
   const router = useRouter();
@@ -144,11 +145,7 @@ export default function Login() {
               error={error.passwordError}
               disabled={isLoading}
             />
-            {error.apiError && (
-              <p className="text-error text-sm font-medium py-2">
-                {error.apiError}
-              </p>
-            )}
+            {error.apiError && <ApiError errorMessage={error.apiError} />}
             <div className="flex items-center gap-6 my-6">
               <Button
                 isDisabled={isLoading}

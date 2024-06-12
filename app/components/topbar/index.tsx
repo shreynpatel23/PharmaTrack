@@ -4,6 +4,7 @@ import { fetchData } from "@/utils/fetch";
 import React, { useState } from "react";
 import Loading from "../loading";
 import { useRouter } from "next/navigation";
+import ApiError from "../api-error";
 
 export default function TopBar() {
   const router = useRouter();
@@ -41,11 +42,7 @@ export default function TopBar() {
       </h2>
       <div className="ml-auto">
         <>
-          {error.apiError && (
-            <p className="text-error text-sm font-medium py-2">
-              {error.apiError}
-            </p>
-          )}
+          {error.apiError && <ApiError errorMessage={error.apiError} />}
           {isLoading ? (
             <div className="py-2">
               <Loading />

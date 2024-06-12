@@ -7,6 +7,7 @@ import Button from "../components/button";
 import ArrowRight from "../components/icons/ArrowRight";
 import { useState } from "react";
 import { postData } from "@/utils/fetch";
+import ApiError from "../components/api-error";
 
 export default function Signup() {
   const router = useRouter();
@@ -227,11 +228,7 @@ export default function Signup() {
                 disabled={isLoading}
               />
             </div>
-            {error.apiError && (
-              <p className="text-error text-sm font-medium py-2">
-                {error.apiError}
-              </p>
-            )}
+            {error.apiError && <ApiError errorMessage={error.apiError} />}
             <div className="flex items-center gap-6 my-6">
               <Button
                 buttonClassName="rounded-md shadow-button hover:shadow-buttonHover bg-accent hover:bg-accentHover text-white"
