@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { StoreContext } from "@/context/storeContext";
+import { UserContext } from "@/context/userContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-background`}>
-        <StoreContext>{children}</StoreContext>
+        <UserContext>{children}</UserContext>
       </body>
     </html>
   );

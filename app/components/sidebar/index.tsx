@@ -1,12 +1,12 @@
 "use client";
-import { useStoreContext } from "@/context/storeContext";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Fragment } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
+import { useUserContext } from "@/context/userContext";
 
 export default function Sidebar() {
-  const { storeId } = useStoreContext();
+  const { user } = useUserContext();
   const pathname = usePathname().split("/");
 
   // CONSTANTS
@@ -20,7 +20,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="w-[200px]">
+    <div className="w-[200px] h-screen">
       <div className="py-6 pl-6">
         <Link href={"/"}>
           <Image
@@ -36,7 +36,7 @@ export default function Sidebar() {
       <div className="flex flex-col gap-9 py-6 pl-6">
         {SIDEBAR_ITEMS.map((item) => (
           <div key={item} className="flex flex-col gap-1">
-            <Link href={`/store/${storeId}/${item.toLowerCase()}`}>
+            <Link href={`/store/${user.store}/${item.toLowerCase()}`}>
               <p
                 className={`text-sm font-medium ${
                   pathname.includes(item.toLowerCase())

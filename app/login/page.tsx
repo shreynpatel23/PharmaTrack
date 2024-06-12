@@ -7,7 +7,7 @@ import Button from "../components/button";
 import ArrowRight from "../components/icons/ArrowRight";
 import { useState } from "react";
 import { postData } from "@/utils/fetch";
-import { useStoreContext } from "@/context/storeContext";
+import { useUserContext } from "@/context/userContext";
 
 export default function Login() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   // CONTEXT
-  const { setStoreId } = useStoreContext();
+  const { setUser } = useUserContext();
 
   function checkEmail() {
     if (!email) {
@@ -75,10 +75,10 @@ export default function Login() {
       if (!data.store) {
         return router.push("/onboarding");
       }
-      setStoreId(data?.store);
+      setUser(data);
       try {
         if (typeof window !== "undefined") {
-          localStorage.setItem("storeId", data?.store);
+          localStorage.setItem("userId", data._id);
         }
       } catch (error) {
         console.error("Error while setting token in localStorage:", error);
