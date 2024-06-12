@@ -7,7 +7,7 @@ export default function SearchInput(
     <div className="p-2 rounded-md border border-grey bg-white flex items-center gap-2">
       <div className="pl-2">
         <img
-          src="/search.svg"
+          src="/Search.svg"
           alt="search icon for input"
           className="w-[20px]"
         />
