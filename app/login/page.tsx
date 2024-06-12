@@ -7,6 +7,7 @@ import Button from "../components/button";
 import ArrowRight from "../components/icons/ArrowRight";
 import { useState } from "react";
 import { postData } from "@/utils/fetch";
+import { useStoreContext } from "@/context/storeContext";
 
 export default function Login() {
   const router = useRouter();
@@ -18,6 +19,9 @@ export default function Login() {
     apiError: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // CONTEXT
+  const { setStoreId } = useStoreContext();
 
   function checkEmail() {
     if (!email) {
@@ -71,7 +75,9 @@ export default function Login() {
       if (!data.store) {
         return router.push("/onboarding");
       }
-      return router.push(`/store/${data?.store}`);
+      setStoreId(data?.store);
+      localStorage.setItem("storeId", data?.store);
+      return router.push(`/store/${data?.store}/dashboard`);
     } catch (err: any) {
       setError((error) => ({
         ...error,
