@@ -1,3 +1,4 @@
+"use client";
 import Sidebar from "@/app/components/sidebar";
 import React from "react";
 
