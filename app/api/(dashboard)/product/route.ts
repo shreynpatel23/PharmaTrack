@@ -41,7 +41,7 @@ export const GET = async (request: Request) => {
       .populate({ path: "store", select: ["_id", "name"] })
       .populate({
         path: "supplier",
-        select: ["_id", "firstName", "lastName", "location"],
+        select: ["_id", "firstName", "lastName"],
       });
 
     // send them to the frontend

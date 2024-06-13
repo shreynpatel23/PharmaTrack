@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connect from "@/lib/db";
 import { Types } from "mongoose";
 import Product from "@/lib/models/product";
+import Supplier from "@/lib/models/supplier";
 
 // get product details api
 export const GET = async (request: Request, context: { params: any }) => {
@@ -19,8 +20,14 @@ export const GET = async (request: Request, context: { params: any }) => {
     // establish the database connection
     await connect();
 
+    // load the supplier model to avoid the MissingSchema error
+    await Supplier.find({});
+
     // get product details from productId
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate({
+      path: "supplier",
+      select: ["_id", "firstName", "lastName"],
+    });
 
     if (!product) {
       return new NextResponse(

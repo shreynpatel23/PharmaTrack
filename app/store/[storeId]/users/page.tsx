@@ -175,7 +175,7 @@ export default function Users() {
                         >
                           <img
                             src="/Edit.svg"
-                            alt="Edit Icon for Supplier"
+                            alt="Edit Icon for user"
                             className="w-[16px]"
                           />
                         </button>
@@ -190,7 +190,7 @@ export default function Users() {
                         >
                           <img
                             src="/Delete.svg"
-                            alt="Delete Icon for Supplier"
+                            alt="Delete Icon for user"
                             className="w-[16px]"
                           />
                         </button>
@@ -248,7 +248,7 @@ export default function Users() {
       </div>
       {deleteModal.toggle && (
         <DeleteModal
-          heading="Delete Supplier"
+          heading="Delete User"
           subHeading={`Are you sure you want to delete "${deleteModal.data.firstName} ${deleteModal.data.lastName}" from your User's List. Please keep in mind that these changes will not be reverted`}
           isLoading={deleteUserLoading}
           onCancel={() =>

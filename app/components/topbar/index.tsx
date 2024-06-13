@@ -31,6 +31,7 @@ export default function TopBar() {
       setIsLoading(false);
       if (typeof window !== "undefined") {
         localStorage.removeItem("userId");
+        localStorage.removeItem("token");
       }
     }
   }
