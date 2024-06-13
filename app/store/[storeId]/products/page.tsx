@@ -165,7 +165,7 @@ export default function Products() {
                     {product?.quantity < 10 && (
                       <Link
                         href={`/store/${user.store}/add-order`}
-                        className="text-sm px-2 py-1 rounded-full text-[10px] text-white font-bold bg-accent"
+                        className="px-2 py-1 rounded-full text-[10px] text-white font-bold bg-accent"
                       >
                         Add Order
                       </Link>
