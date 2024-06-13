@@ -25,3 +25,7 @@ export function isRouteProtected(url: string) {
 export function isUserAdmin(user: IUser) {
   return user.role.name.toLowerCase() !== "Employee".toLowerCase();
 }
+
+export function isUserOwner(user: IUser) {
+  return user.role.name.toLowerCase() === "Owner".toLowerCase();
+}

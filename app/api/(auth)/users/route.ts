@@ -184,7 +184,7 @@ export const PUT = async (request: Request) => {
         phoneNumber,
         email,
         status,
-        roleId,
+        role: new Types.ObjectId(roleId),
       },
       {
         new: true,

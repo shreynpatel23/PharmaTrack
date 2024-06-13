@@ -239,7 +239,7 @@ export default function Suppliers() {
       {deleteModal.toggle && (
         <DeleteModal
           heading="Delete Supplier"
-          subHeading={`Are you sure you want to delete "${deleteModal.data.firstName} ${deleteModal.data.lastName}" from your Supplier's's List. Please keep in mind that these changes will not be reverted`}
+          subHeading={`Are you sure you want to delete "${deleteModal.data.firstName} ${deleteModal.data.lastName}" from your Supplier's List. Please keep in mind that these changes will not be reverted`}
           isLoading={deleteSupplierLoading}
           onCancel={() =>
             setDeleteModal({
