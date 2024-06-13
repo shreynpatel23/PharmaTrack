@@ -8,9 +8,11 @@ import ArrowRight from "../components/icons/ArrowRight";
 import { useState } from "react";
 import { postData } from "@/utils/fetch";
 import ApiError from "../components/api-error";
+import { useUserContext } from "@/context/userContext";
 
 export default function Signup() {
   const router = useRouter();
+  const { setUser } = useUserContext();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -138,7 +140,8 @@ export default function Signup() {
         } catch (error) {
           console.error("Error while setting token in localStorage:", error);
         }
-        return router.push(`/onboarding`);
+        setUser(data);
+        return router.push(`/store/create-store/${data?._id}`);
       }
     } catch (err: any) {
       setError((error) => ({

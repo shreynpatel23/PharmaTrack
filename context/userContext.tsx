@@ -33,15 +33,21 @@ const INITIAL_STATE: IUser = {
 const Context = createContext<{
   user: IUser;
   setUser: (user: IUser) => void;
+  toggleFetchUserDetails: boolean;
+  setToggleFetchUserDetails: (value: boolean) => void;
 }>({
   user: INITIAL_STATE,
   setUser: () => {},
+  toggleFetchUserDetails: false,
+  setToggleFetchUserDetails: () => {},
 });
 
 export function UserContext({ children }: { children: React.ReactNode }) {
   const userId =
     (typeof window !== "undefined" && localStorage.getItem("userId")) ?? "";
   const [user, setUser] = useState<IUser>(INITIAL_STATE);
+  const [toggleFetchUserDetails, setToggleFetchUserDetails] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>();
 
   useEffect(() => {
@@ -66,13 +72,15 @@ export function UserContext({ children }: { children: React.ReactNode }) {
     return () => {
       setIsLoading(false);
     };
-  }, [userId]);
+  }, [userId, toggleFetchUserDetails]);
 
   return (
     <Context.Provider
       value={{
         user,
         setUser,
+        toggleFetchUserDetails,
+        setToggleFetchUserDetails,
       }}
     >
       {isLoading ? (

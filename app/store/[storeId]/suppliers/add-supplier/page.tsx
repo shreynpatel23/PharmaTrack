@@ -44,6 +44,7 @@ export default function AddSupplier() {
   });
 
   const { firstName, lastName, email, phoneNumber } = supplier;
+  const { addressLine1, city, provience, country, postalCode } = location;
 
   function checkEmail() {
     if (!email) {
@@ -112,12 +113,92 @@ export default function AddSupplier() {
     return true;
   }
 
+  function checkAddressLine1() {
+    if (!addressLine1) {
+      setError((error) => ({
+        ...error,
+        addressLine1Error: "Address is required",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      addressLine1Error: "",
+    }));
+    return true;
+  }
+
+  function checkCity() {
+    if (!city) {
+      setError((error) => ({
+        ...error,
+        cityError: "City is required",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      cityError: "",
+    }));
+    return true;
+  }
+
+  function checkProvience() {
+    if (!provience) {
+      setError((error) => ({
+        ...error,
+        provienceError: "Provience is required",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      provienceError: "",
+    }));
+    return true;
+  }
+
+  function checkCountry() {
+    if (!country) {
+      setError((error) => ({
+        ...error,
+        countryError: "Country is required",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      countryError: "",
+    }));
+    return true;
+  }
+
+  function checkPostalCode() {
+    if (!postalCode) {
+      setError((error) => ({
+        ...error,
+        postalCodeError: "Postal Code is required",
+      }));
+      return false;
+    }
+    setError((error) => ({
+      ...error,
+      postalCodeError: "",
+    }));
+    return true;
+  }
+
   async function handleAddsupplier() {
     const ALL_CHECKS_PASS = [
       checkEmail(),
       checkFirstName(),
       checkLastName(),
       checkPhoneNumber(),
+      checkAddressLine1(),
+      checkCity(),
+      checkProvience(),
+      checkCountry(),
+      checkPostalCode(),
     ].every(Boolean);
 
     if (!ALL_CHECKS_PASS) return;
