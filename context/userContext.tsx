@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export interface IUser {
+  _id: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -18,6 +19,7 @@ export interface IUser {
 }
 
 const INITIAL_STATE: IUser = {
+  _id: "",
   firstName: "",
   lastName: "",
   phoneNumber: "",

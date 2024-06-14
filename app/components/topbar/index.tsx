@@ -20,7 +20,6 @@ export default function TopBar() {
     try {
       const response = await fetchData("/api/logout");
       const { message } = response;
-      console.log(message);
       return router.replace("/login");
     } catch (err: any) {
       setError((error) => ({

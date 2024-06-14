@@ -20,7 +20,11 @@ export const GET = async (request: Request, context: { params: any }) => {
     await connect();
 
     // get order details from orderId
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId)
+      .populate({ path: "store", select: ["_id", "name"] })
+      .populate({ path: "createdBy", select: ["_id", "firstName", "lastName"] })
+      .populate({ path: "product" })
+      .exec();
 
     if (!order) {
       return new NextResponse(

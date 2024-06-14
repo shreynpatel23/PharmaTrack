@@ -89,7 +89,6 @@ export default function EditProduct({
           id: supplier._id,
           name: `${supplier.firstName} ${supplier.lastName}`,
         }));
-        console.log(filteredData);
         setSuppliers([{ id: "", name: "Select a Supplier" }, ...filteredData]);
       } catch (error) {
       } finally {

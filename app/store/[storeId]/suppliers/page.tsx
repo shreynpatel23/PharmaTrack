@@ -21,7 +21,7 @@ export default function Suppliers() {
   const { user } = useUserContext();
 
   const [searchText, setSearchText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteSupplierLoading, setDeleteSupplierLoading] = useState(false);
   const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
   const [successDeleteMessage, setSuccessDeleteMessage] = useState("");

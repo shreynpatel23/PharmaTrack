@@ -22,7 +22,7 @@ export default function Products() {
   const { user } = useUserContext();
 
   const [searchText, setSearchText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteProductLoading, setDeleteProductLoading] = useState(false);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [successDeleteMessage, setSuccessDeleteMessage] = useState("");

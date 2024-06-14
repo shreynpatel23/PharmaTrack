@@ -3,7 +3,7 @@ export interface IProduct {
   productName?: string;
   drugCode?: string;
   strength?: string;
-  quantity?: number;
+  quantity?: string;
   price?: string;
   supplier?: {
     _id?: string;

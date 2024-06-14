@@ -21,7 +21,7 @@ export default function Users() {
   const { user } = useUserContext();
 
   const [searchText, setSearchText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteUserLoading, setDeleteUserLoading] = useState(false);
   const [users, setUsers] = useState<IUser[]>([]);
   const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
@@ -179,21 +179,23 @@ export default function Users() {
                             className="w-[16px]"
                           />
                         </button>
-                        <button
-                          className="w-8 h-8 rounded-full flex items-center justify-center bg-[#FFE9E9]"
-                          onClick={() =>
-                            setDeleteModal({
-                              toggle: true,
-                              data: userData,
-                            })
-                          }
-                        >
-                          <img
-                            src="/Delete.svg"
-                            alt="Delete Icon for user"
-                            className="w-[16px]"
-                          />
-                        </button>
+                        {user._id !== userData._id && (
+                          <button
+                            className="w-8 h-8 rounded-full flex items-center justify-center bg-[#FFE9E9]"
+                            onClick={() =>
+                              setDeleteModal({
+                                toggle: true,
+                                data: userData,
+                              })
+                            }
+                          >
+                            <img
+                              src="/Delete.svg"
+                              alt="Delete Icon for user"
+                              className="w-[16px]"
+                            />
+                          </button>
+                        )}
                       </div>
                     </div>
                   )}

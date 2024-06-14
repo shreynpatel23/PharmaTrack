@@ -21,7 +21,7 @@ export default function Customers() {
   const { user } = useUserContext();
 
   const [searchText, setSearchText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteCustomerLoading, setDeleteCustomerLoading] = useState(false);
   const [customers, setCustomers] = useState<ICustomer[]>([]);
   const [successDeleteMessage, setSuccessDeleteMessage] = useState("");

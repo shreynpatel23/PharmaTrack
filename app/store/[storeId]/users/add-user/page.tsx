@@ -216,7 +216,7 @@ export default function AddUser() {
           {rolesLoading ? (
             <FullPageLoading
               wrapperClassName="h-[60vh] flex items-center justify-center"
-              message="Fetching Roles!"
+              message="Fetching all available roles!"
             />
           ) : (
             <div className="bg-white w-[600px] border border-grey/45 shadow-card rounded-[16px] p-8">

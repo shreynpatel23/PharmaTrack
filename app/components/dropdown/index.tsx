@@ -2,8 +2,16 @@ import React from "react";
 import { IDropdownProps } from "./interface";
 
 export default function Dropdown(props: IDropdownProps) {
-  const { id, label, onClick, options, selectedOption, hasError, error } =
-    props;
+  const {
+    id,
+    label,
+    onClick,
+    options,
+    selectedOption,
+    hasError,
+    error,
+    isDisabled,
+  } = props;
   return (
     <div className="py-2">
       <label
@@ -17,24 +25,25 @@ export default function Dropdown(props: IDropdownProps) {
         className={`w-full px-4 py-2 mb-2 outline-none bg-white border placeholder:text-sm placeholder:text-grey rounded-md ${
           hasError ? "border-error" : "border-grey"
         }`}
-        value={selectedOption.name ?? "Select Role"}
+        disabled={isDisabled}
+        value={selectedOption?.name ?? ""}
         onChange={(event) => {
-          const selectedOption = options.find(
+          const selectedOption = options?.find(
             (option) =>
               option.name.toLowerCase() === event.target.value.toLowerCase()
           ) || {
             id: "",
             name: "",
           };
-          onClick(selectedOption);
+          onClick?.(selectedOption);
         }}
       >
-        {options.map((option) => (
+        {options?.map((option) => (
           <option
             key={option.id}
             value={option.name}
             className={`text-sm leading-4 ${
-              option.name.toLowerCase() === selectedOption.name.toLowerCase()
+              option.name.toLowerCase() === selectedOption?.name.toLowerCase()
                 ? "text-accent font-medium"
                 : "text-heading"
             }`}

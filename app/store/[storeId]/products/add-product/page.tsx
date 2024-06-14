@@ -56,7 +56,6 @@ export default function AddProduct() {
           id: supplier._id,
           name: `${supplier.firstName} ${supplier.lastName}`,
         }));
-        console.log(filteredData);
         setSuppliers([{ id: "", name: "Select a Supplier" }, ...filteredData]);
       } catch (error) {
       } finally {
@@ -191,7 +190,7 @@ export default function AddProduct() {
           {supplierLoading ? (
             <FullPageLoading
               wrapperClassName="h-[60vh] flex items-center justify-center"
-              message="Fetching Suppliers!"
+              message="Fetching all available suppliers to associate with product!"
             />
           ) : (
             <div className="bg-white w-[600px] border border-grey/45 shadow-card rounded-[16px] p-8">
