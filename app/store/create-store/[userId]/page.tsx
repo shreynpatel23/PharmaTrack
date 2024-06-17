@@ -154,7 +154,7 @@ export default function CreateStore({
       setToggleFetchUserDetails(true);
       const { data } = response;
       // fetch the updated user details and store it in the context
-      return router.push(`/store/${data?._id}/dashboard`);
+      return router.push(`/store/${data?._id}/products`);
     } catch (err: any) {
       setError((error) => ({
         ...error,

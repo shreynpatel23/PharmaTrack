@@ -85,7 +85,7 @@ export default function Login() {
       if (!data.store) {
         return router.push(`/store/create-store/${data?._id}`);
       }
-      return router.push(`/store/${data?.store}/dashboard`);
+      return router.push(`/store/${data?.store}/products`);
     } catch (err: any) {
       setError((error) => ({
         ...error,

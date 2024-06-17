@@ -11,7 +11,7 @@ export default function Sidebar() {
 
   // CONSTANTS
   const SIDEBAR_ITEMS = [
-    "Dashboard",
+    // "Dashboard",
     "Products",
     "Suppliers",
     "Customers",
